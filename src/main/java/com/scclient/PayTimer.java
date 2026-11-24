@@ -10,7 +10,7 @@ import java.util.regex.PatternSyntaxException;
 
 /**
  * A timer that watches the game chat for payments ("Steve paid you $500") while it runs
- * and remembers the biggest one. Any chat line with "outbid" in it puts the clock back to 10 seconds. Start / stop it with K or /paytimer; it shows in the top-left corner.
+ * and remembers the biggest one. Any chat line with "outbid" in it puts the clock back to 10 seconds. Start / stop it in the Right Shift settings (HUD) or with /paytimer; it shows in the top-left corner.
  * If your server words payments differently, put your own pattern in config/sc-mod.json as "payRegex",
  * using named groups: (?<amount>...) and optionally (?<player>...).
  */
@@ -50,6 +50,9 @@ public final class PayTimer {
 
     private Pattern customCache;
     private String customSource = "";
+
+    public boolean isRunning() { return running; }
+    public boolean isFinished() { return finished; }
 
     public boolean visible() {
         return running || finished;
@@ -198,7 +201,7 @@ public final class PayTimer {
         return String.format(Locale.US, v == Math.floor(v) ? "$%,.0f" : "$%,.2f", v);
     }
 
-    static String time(long ms) {
+    public static String time(long ms) {
         long s = (ms + 999) / 1000;
         long h = s / 3600, m = (s % 3600) / 60, sec = s % 60;
         return h > 0 ? String.format("%d:%02d:%02d", h, m, sec) : String.format("%02d:%02d", m, sec);

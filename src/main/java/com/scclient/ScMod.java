@@ -22,12 +22,13 @@ import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** SC Client's in-game mod: the Wardrobe cosmetics and the pay timer. Nothing else. */
+/** SC Client's in-game mod: the Wardrobe cosmetics and the pay timer (in the Right Shift settings). Nothing else. */
 public final class ScMod implements ClientModInitializer {
     /** saved in config/sc-mod.json */
     public static final class Settings {
         public int payTimerSeconds = 300;
         public String payRegex = "";
+        public boolean seeHats = true, seeCapes = true, seeWings = true;
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -51,7 +52,7 @@ public final class ScMod implements ClientModInitializer {
         save();
     }
 
-    private static void save() {
+    public static void save() {
         try { Files.writeString(file(), GSON.toJson(settings)); } catch (Exception ignored) { }
     }
 
@@ -62,7 +63,7 @@ public final class ScMod implements ClientModInitializer {
 
         KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(ScCosmetics.MOD_ID, "main"));
         timerKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-                "key." + ScCosmetics.MOD_ID + ".paytimer", InputConstants.Type.KEYSYM, InputConstants.KEY_K, category));
+                "key." + ScCosmetics.MOD_ID + ".paytimer", InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), category));
 
         // the pay timer reads server messages ("Steve paid you $500") while it runs
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
@@ -109,7 +110,7 @@ public final class ScMod implements ClientModInitializer {
     }
 
     private static String help() {
-        return "[SC Client] Pay timer (" + PayTimer.time(settings.payTimerSeconds * 1000L) + "). Press K to start / stop, or: "
+        return "[SC Client] Pay timer (" + PayTimer.time(settings.payTimerSeconds * 1000L) + "). Start / stop it in the settings (Right Shift > HUD), or: "
                 + "/paytimer start [5m], /paytimer stop, /paytimer clear, /paytimer length <1m30s>";
     }
 

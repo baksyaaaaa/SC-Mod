@@ -4,8 +4,9 @@ SC Client's in-game Fabric mod. The [SC Client launcher](https://github.com/baks
 
 - **Cosmetics:** the hats, capes, wings and cape-patterned elytras picked in the launcher's Wardrobe, on you and on other SC Client players. Picks changed in the launcher show up in game within 2 seconds.
 - **Pay timer:** counts down and watches chat for payments ("Steve paid you $500"), keeping the biggest one. Any "outbid" line puts the clock back to 10 seconds.
-  - **K** starts / stops it (change the key in Controls).
-  - `/paytimer start [5m]`, `/paytimer stop`, `/paytimer clear`, `/paytimer length 1m30s`
+  - Start / stop it and set its length in the settings: **Right Shift > HUD > Pay timer**.
+  - Also: `/paytimer start [5m]`, `/paytimer stop`, `/paytimer clear`, `/paytimer length 1m30s`, and an optional key in Controls.
+- **Settings** (Right Shift): HUD (pay timer) and Render (whether you see other players' hats, capes and wings).
   - Different payment wording on your server: put a pattern in `config/sc-mod.json` as `payRegex` with the named groups `amount` (and optionally `player`).
 
 Built by GitHub Actions for Minecraft 1.21.11 and 26.x; the jars are on the [latest release](https://github.com/baksyaaaaa/SC-Mod/releases/latest).
