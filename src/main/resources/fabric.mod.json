@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "scmod",
+  "version": "${version}",
+  "name": "SC Client",
+  "description": "SC Client's in-game mod: the Wardrobe cosmetics (hats, capes, wings, cape elytras) on you and other SC Client players, and the pay timer (K or /paytimer).",
+  "authors": ["baksya", "wsammyyy"],
+  "license": "GPL-3.0-only",
+  "icon": "assets/scmod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.scclient.ScMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "breaks": {
+    "chromeclient": "*"
+  },
+  "mixins": ["scmod.mixins.json"]
+}
