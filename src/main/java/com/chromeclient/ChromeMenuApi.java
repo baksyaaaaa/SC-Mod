@@ -70,6 +70,11 @@ public final class ChromeMenuApi {
         return o;
     }
 
+    /** +by when the menu asked for more than now, -by when it asked for less */
+    private static int step(double asked, int now, int by) {
+        return asked > now + 0.001 ? by : asked < now - 0.001 ? -by : 0;
+    }
+
     public static List<Map<String, Object>> modules() {
         ScMod.Settings s = ScMod.settings();
         List<Map<String, Object>> out = new ArrayList<>();
@@ -84,8 +89,18 @@ public final class ChromeMenuApi {
             if (pt.isRunning()) pt.stop(); else pt.start(s.payTimerSeconds);
         }));
         timer.add(action(() -> "Hide the result", () -> PayTimer.get().clear()));
-        timer.add(slider("Minutes", () -> s.payTimerSeconds / 60, v -> s.payTimerSeconds = Math.max(5, (int) Math.round(v) * 60 + s.payTimerSeconds % 60), 0, 60, "%d"));
-        timer.add(slider("Seconds", () -> s.payTimerSeconds % 60, v -> s.payTimerSeconds = Math.max(5, (s.payTimerSeconds / 60) * 60 + (int) Math.round(v)), 0, 59, "%d"));
+        // the menu's - / + buttons move a slider by a twentieth of its range (3 here), so only the direction is used:
+        // minutes go up / down by 1, seconds by 2
+        timer.add(slider("Minutes", () -> s.payTimerSeconds / 60, v -> {
+            int min = s.payTimerSeconds / 60, sec = s.payTimerSeconds % 60;
+            min = Math.max(0, Math.min(60, min + step(v, min, 1)));
+            s.payTimerSeconds = Math.max(5, min * 60 + sec);
+        }, 0, 60, "%d"));
+        timer.add(slider("Seconds", () -> s.payTimerSeconds % 60, v -> {
+            int min = s.payTimerSeconds / 60, sec = s.payTimerSeconds % 60;
+            sec = Math.max(0, Math.min(59, sec + step(v, sec, 2)));
+            s.payTimerSeconds = Math.max(5, min * 60 + sec);
+        }, 0, 59, "%d"));
         out.add(module("HUD", "Pay timer", "Counts down and reads payment messages in chat. It shows in the top-left corner.", timer));
 
         List<Map<String, Object>> see = new ArrayList<>();
