@@ -217,7 +217,7 @@ public final class CosmeticLayer extends RenderLayer {
             final boolean lobby = av.id == lobbyId;   // the lobby scene swaps in its own player, so mc.player is NOT null there
             final boolean preview = previewing || lobby;
             HatMesh.preview = preview;
-            tagChromeUser(mc, av, preview);
+            // (the SC badge in front of names comes from the menu mod, so nothing is added to the name here)
             if (!preview && (mc.player == null || mc.level == null)) return;
             var self = preview ? null : mc.level.getEntity(av.id);
             if (self != null && self.isInvisible()) return;   // invisible players show nothing of theirs
