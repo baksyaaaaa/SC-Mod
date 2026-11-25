@@ -29,6 +29,8 @@ public final class ScMod implements ClientModInitializer {
         public int payTimerSeconds = 300;
         public String payRegex = "";
         public boolean seeHats = true, seeCapes = true, seeWings = true;
+        /** the menu mod's badge in front of other players' names (off by default) */
+        public boolean showBadges = false;
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -74,6 +76,7 @@ public final class ScMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             PayTimer.get().update(client);
+            if (++ticks % 40 == 1) applyBadges();
             while (timerKey.consumeClick()) {
                 if (client.player == null) continue;
                 PayTimer pt = PayTimer.get();
@@ -107,6 +110,23 @@ public final class ScMod implements ClientModInitializer {
                                             ctx.getSource().sendFeedback(Component.literal("[SC Client] Pay timer length: " + PayTimer.time(s * 1000L)));
                                             return 1;
                                         })))));
+    }
+
+    private static int ticks = 0;
+    private static java.lang.reflect.Method badgeSetter;
+    private static boolean badgeLookedUp = false;
+
+    /** keeps the menu mod's name badges the way the Render setting says (the menu mod is found by name; without it nothing happens) */
+    private static void applyBadges() {
+        try {
+            if (!badgeLookedUp) {
+                badgeLookedUp = true;
+                badgeSetter = Class.forName("org.polyfrost.polyplus.client.PolyPlusConfig").getMethod("setShowPolyPlusIndicator", boolean.class);
+            }
+            if (badgeSetter != null) badgeSetter.invoke(null, settings.showBadges);
+        } catch (Throwable ignored) {
+            badgeSetter = null;
+        }
     }
 
     private static String help() {

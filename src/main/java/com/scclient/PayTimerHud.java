@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 
 /** The pay timer box in the top-left corner while the timer runs (and its result after). */
 public final class PayTimerHud {
-    private static final int BG = 0xB0070B17, BORDER = 0x663D7BFF, ACCENT = 0xFF3D8BFF, TEXT = 0xFFFFFFFF, MUTED = 0xFFA9B6D3, TRACK = 0x33FFFFFF;
+    private static final int BG = 0xB00B0816, BORDER = 0x668B5CF6, ACCENT = 0xFF8B5CF6, TEXT = 0xFFFFFFFF, MUTED = 0xFFB7ABD6, TRACK = 0x33FFFFFF;
 
     private PayTimerHud() {}
 

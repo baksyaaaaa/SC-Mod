@@ -107,6 +107,7 @@ public final class ChromeMenuApi {
         see.add(toggle("Other players' hats", () -> s.seeHats, v -> s.seeHats = v));
         see.add(toggle("Other players' capes", () -> s.seeCapes, v -> s.seeCapes = v));
         see.add(toggle("Other players' wings", () -> s.seeWings, v -> s.seeWings = v));
+        see.add(toggle("Badges in front of names", () -> s.showBadges, v -> s.showBadges = v));
         out.add(module("Render", "Cosmetics", "Pick yours in the launcher's Wardrobe. Here you choose what you see on others.", see));
 
         out.add(module("Music", "Music", "SC Client plays Minecraft's own music.", new ArrayList<>()));
